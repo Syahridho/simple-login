@@ -1,32 +1,41 @@
 import { Component } from "react";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
-import { logoutUserAPI, checkIsLogin } from "../../config/redux/action/action";
+import autoBindReact from "auto-bind/react";
+import { logoutUserAPI } from "../../config/redux/action/action";
 
 class Dashboard extends Component {
-  // constructor(props) {
-  //   super(props)
-  //   this.state = ({
-  //     isLogin
-  //   })
-  // }
-
-  componentDidMount() {
-    const userLocal = JSON.parse(localStorage.getItem("userData"));
-    console.log(userLocal);
-    const { checkInLogin } = this.props;
-
-    checkInLogin(userLocal);
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLogout: false,
+    };
+    autoBindReact(this);
   }
 
-  handleLoguot = () => {
-    const { logout } = this.props;
+  componentDidMount() {
+    const userLocal = JSON.parse(sessionStorage.getItem("userData"));
+    console.log(userLocal);
+  }
 
-    logout();
+  handleLoguot = async () => {
+    const { logout } = this.props;
+    try {
+      await logout();
+      this.setState({ isLogin: false });
+      this.setState({ isLogout: true });
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
   };
 
   render() {
+    const { isLogout } = this.state;
+    if (isLogout) {
+      return <Navigate to={"/login"} />;
+    }
     return (
       <div className="">
         <div className="flex justify-between items-center p-4">
@@ -69,8 +78,7 @@ const reduxState = (state) => ({
 });
 
 const reduxDispatch = (dispatch) => ({
-  loguot: () => dispatch(logoutUserAPI()),
-  checkIsLogin: (data) => dispatch(checkIsLogin(data)),
+  logout: () => dispatch(logoutUserAPI()),
 });
 
 export default connect(reduxState, reduxDispatch)(Dashboard);

@@ -2,6 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
+// import { getDatabase } from "firebase/database";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -10,6 +11,8 @@ import { getAuth } from "firebase/auth";
 const firebaseConfig = {
   apiKey: "AIzaSyDk5_pny3ksJC6BY9ooUhtOzYfdbHdUMG4",
   authDomain: "simple-login-react-cf130.firebaseapp.com",
+  databaseURL:
+    "https://simple-login-react-cf130-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "simple-login-react-cf130",
   storageBucket: "simple-login-react-cf130.appspot.com",
   messagingSenderId: "203369559187",
@@ -21,6 +24,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 // Initialize Firebase Authentication and get a reference to the service
-const auth = getAuth(app);
+const auth = getAuth();
 
 export { app, auth, analytics };

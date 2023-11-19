@@ -17,10 +17,6 @@ class Login extends Component {
     autoBindReact(this);
   }
 
-  componentDidMount = () => {
-    console.log(this.props.isLogin);
-  };
-
   onInputChange = (e, type) => {
     this.setState((prevState) => ({
       ...prevState,
@@ -43,9 +39,8 @@ class Login extends Component {
       .loginAPI({ email, password })
       .catch((err) => err);
 
-    if (res) {
-      localStorage.setItem("userData", JSON.stringify(this.props.user));
-      console.log(isLogin);
+    if (res === true) {
+      sessionStorage.setItem("userData", JSON.stringify(this.props.user));
       this.setState(() => {
         return {
           email: "",
@@ -53,7 +48,13 @@ class Login extends Component {
           login: true,
         };
       });
-      console.log(this.state.login);
+    } else if (res === "auth/invalid-email") {
+      this.setState(() => {
+        return {
+          ...this.state,
+          check: true,
+        };
+      });
     } else {
       this.setState(() => {
         return {

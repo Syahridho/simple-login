@@ -2,6 +2,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import { auth } from "./../../firebase/firebase";
 
@@ -52,30 +53,48 @@ export const loginUserAPI = (data) => (dispatch) => {
         console.log(errorCode, errorMessage);
         dispatch({ type: "CHANGE_ISLOADING", value: false });
         dispatch({ type: "CHANGE_ISLOGIN", value: false });
-        reject(false);
+        reject(errorCode);
       });
   });
 };
 
 export const logoutUserAPI = () => (dispatch) => {
   return new Promise((resolve, reject) => {
+    dispatch({ type: "CHANGE_ISLOADING", value: true });
     return signOut(auth)
       .then(() => {
         dispatch({ type: "CHANGE_ISLOGIN", value: false });
-        console.log("sukses");
+        dispatch({ type: "CHANGE_ISLOADING", value: false });
+        dispatch({ type: "CHANGE_USER", value: {} });
+        sessionStorage.removeItem("userData");
+        resolve(true);
       })
       .catch((error) => {
-        console.log("gagal", error);
-        dispatch({ type: "CHANGE_USER", value: {} });
+        console.log(error);
+        dispatch({ type: "CHANGE_ISLOADING", value: false });
+        reject(false);
       });
   });
 };
 
-export const checkIsLogin = (data) => (dispatch) => {
-  if (data === null) {
-    dispatch({ type: "CHANGE_ISLOGIN", value: false });
-  } else {
-    dispatch({ type: "CHANGE_ISLOGIN", value: true });
-    dispatch({ type: "CHANGE_USER", value: data });
-  }
+export const resetPassword = (email) => (dispatch) => {
+  return new Promise((resolve, reject) => {
+    dispatch({ type: "CHANGE_ISLOADING", value: true });
+    return sendPasswordResetEmail(auth, email)
+      .then(() => {
+        console.log("Email reset kata sandi berhasil dikirim");
+        dispatch({ type: "CHANGE_ISLOGIN", value: false });
+        dispatch({ type: "CHANGE_ISLOADING", value: false });
+        resolve(true);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode);
+        console.log(errorMessage);
+        alert(errorMessage);
+        dispatch({ type: "CHANGE_ISLOADING", value: false });
+        reject(errorCode);
+      });
+  });
 };
