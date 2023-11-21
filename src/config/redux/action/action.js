@@ -98,3 +98,12 @@ export const resetPassword = (email) => (dispatch) => {
       });
   });
 };
+
+export const checkLogin = (user) => (dispatch) => {
+  if (user === null) {
+    dispatch({ type: "CHANGE_ISLOGIN", value: false });
+  } else {
+    dispatch({ type: "CHANGE_ISLOGIN", value: true });
+    dispatch({ type: "CHANGE_USER", value: user });
+  }
+};

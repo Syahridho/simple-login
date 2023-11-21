@@ -40,7 +40,7 @@ class Login extends Component {
       .catch((err) => err);
 
     if (res === true) {
-      sessionStorage.setItem("userData", JSON.stringify(this.props.user));
+      localStorage.setItem("userData", JSON.stringify(this.props.user));
       this.setState(() => {
         return {
           email: "",

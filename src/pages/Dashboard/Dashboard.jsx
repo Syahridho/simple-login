@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 
 import autoBindReact from "auto-bind/react";
-import { logoutUserAPI } from "../../config/redux/action/action";
+import { checkLogin, logoutUserAPI } from "../../config/redux/action/action";
 
 class Dashboard extends Component {
   constructor(props) {
@@ -16,11 +16,13 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
-    const userLocal = JSON.parse(sessionStorage.getItem("userData"));
+    const userLocal = JSON.parse(localStorage.getItem("userData"));
     console.log(userLocal);
+    // const { checkLogin } = this.props;
+    // checkLogin(userLocal);
   }
 
-  handleLoguot = async () => {
+  handleLogout = async () => {
     const { logout } = this.props;
     try {
       await logout();
@@ -42,7 +44,7 @@ class Dashboard extends Component {
           <h1>Dashboard</h1>
           {this.props.isLogin === true ? (
             <button
-              onClick={this.handleLoguot}
+              onClick={this.handleLogout}
               className="border border-red-400 py-1 px-2 text-red-400 rounded-sm"
             >
               logout
@@ -79,6 +81,7 @@ const reduxState = (state) => ({
 
 const reduxDispatch = (dispatch) => ({
   logout: () => dispatch(logoutUserAPI()),
+  checkLogin: () => dispatch(checkLogin()),
 });
 
 export default connect(reduxState, reduxDispatch)(Dashboard);
