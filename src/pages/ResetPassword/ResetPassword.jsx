@@ -33,18 +33,18 @@ const ResetPassword = ({ resetPass, isLoading }) => {
   };
 
   return (
-    <div className="grid justify-center gap-4 pt-4">
+    <div className="grid justify-center gap-4 pt-10">
       <h1 className="font-medium text-2xl text-center">Reset Password</h1>
       {emailFail ? (
         <div className="bg-red-400 text-white px-3 py-2 rounded border border-red-500 flex justify-between">
-          <p>Email belum dibuat</p>
+          <p>Terlalu banyak percobaan</p>
           <button onClick={() => setEmailFail(false)}>x</button>
         </div>
       ) : null}
 
       {emailSucces ? (
-        <div className="bg-blue-400 text-white px-3 py-2 rounded border border-blue-500 flex justify-between">
-          <p>Cek Email Bro</p>
+        <div className="bg-blue-400 text-blue-700 font-medium px-3 py-2 rounded border border-blue-500 flex justify-between">
+          <p>Silahkan cek email anda</p>
           <button onClick={() => setEmailSucces(false)}>x</button>
         </div>
       ) : null}

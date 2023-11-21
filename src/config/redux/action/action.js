@@ -21,10 +21,10 @@ export const registerUserAPI = (data) => (dispatch) => {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
+        console.log(errorCode);
         dispatch({ type: "CHANGE_ISLOADING", value: false });
         dispatch({ type: "CHANGE_ISALLREADYEMAIL", value: true });
-        reject(false);
+        reject(errorCode);
       });
   });
 };
@@ -42,6 +42,7 @@ export const loginUserAPI = (data) => (dispatch) => {
           emailVerified: user.emailVerified,
           refrestToken: user.refreshToken,
         };
+        localStorage.setItem("userData", JSON.stringify(dataUser));
         dispatch({ type: "CHANGE_ISLOADING", value: false });
         dispatch({ type: "CHANGE_ISLOGIN", value: true });
         dispatch({ type: "CHANGE_USER", value: dataUser });
@@ -66,7 +67,7 @@ export const logoutUserAPI = () => (dispatch) => {
         dispatch({ type: "CHANGE_ISLOGIN", value: false });
         dispatch({ type: "CHANGE_ISLOADING", value: false });
         dispatch({ type: "CHANGE_USER", value: {} });
-        sessionStorage.removeItem("userData");
+        localStorage.removeItem("userData");
         resolve(true);
       })
       .catch((error) => {
@@ -82,19 +83,14 @@ export const resetPassword = (email) => (dispatch) => {
     dispatch({ type: "CHANGE_ISLOADING", value: true });
     return sendPasswordResetEmail(auth, email)
       .then(() => {
-        console.log("Email reset kata sandi berhasil dikirim");
-        dispatch({ type: "CHANGE_ISLOGIN", value: false });
         dispatch({ type: "CHANGE_ISLOADING", value: false });
+        console.log("berhasil");
         resolve(true);
       })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode);
-        console.log(errorMessage);
-        alert(errorMessage);
+      .catch((erorr) => {
+        console.log(erorr);
         dispatch({ type: "CHANGE_ISLOADING", value: false });
-        reject(errorCode);
+        reject(false);
       });
   });
 };
