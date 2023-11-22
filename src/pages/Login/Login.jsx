@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { loginUserAPI } from "../../config/redux/action/action";
 import Button from "../../components/Button";
+
+import { LiaEyeSolid, LiaEyeSlashSolid } from "react-icons/lia";
 
 const Login = ({ isLoading, loginAPI }) => {
   const [form, setForm] = useState({
@@ -12,6 +14,7 @@ const Login = ({ isLoading, loginAPI }) => {
 
   const [login, setLogin] = useState(false);
   const [check, setCheck] = useState(false);
+  const [show, setShow] = useState(false);
 
   const onInputChange = (e, type) => {
     setForm((prevState) => ({
@@ -21,28 +24,21 @@ const Login = ({ isLoading, loginAPI }) => {
   };
 
   const onSubmitHandle = async () => {
+    setCheck(false);
     const res = await loginAPI({
       email: form.email,
       password: form.password,
     }).catch((err) => err);
 
-    if (res) {
+    if (res === true) {
       setForm({
         email: "",
         password: "",
       });
       setLogin(true);
     } else if (res === "auth/invalid-email") {
-      setForm({
-        email: "",
-        password: "",
-      });
       setCheck(true);
     } else {
-      setForm({
-        email: "",
-        password: "",
-      });
       setCheck(true);
     }
   };
@@ -68,15 +64,27 @@ const Login = ({ isLoading, loginAPI }) => {
               required
             />
             <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              className="border p-1 "
-              value={form.password}
-              onChange={(e) => onInputChange(e, "password")}
-              required
-            />
+            <div className="relative">
+              <input
+                type={show ? "text" : "password"}
+                name="password"
+                placeholder="Password"
+                className="border p-1 w-full"
+                value={form.password}
+                onChange={(e) => onInputChange(e, "password")}
+                required
+              />
+              <button
+                className="px-3 pt-2.5 pb-1.5 absolute top-0 right-0"
+                onClick={() => setShow(!show)}
+              >
+                {show ? (
+                  <LiaEyeSolid className="text-slate-400" />
+                ) : (
+                  <LiaEyeSlashSolid className="text-slate-400" />
+                )}
+              </button>
+            </div>
             <div className="text-right mb-4">
               <Link
                 className="inline underline italic text-sm"

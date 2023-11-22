@@ -20,7 +20,6 @@ export const registerUserAPI = (data) => (dispatch) => {
       })
       .catch((error) => {
         const errorCode = error.code;
-        const errorMessage = error.message;
         console.log(errorCode);
         dispatch({ type: "CHANGE_ISLOADING", value: false });
         dispatch({ type: "CHANGE_ISALLREADYEMAIL", value: true });
@@ -84,13 +83,12 @@ export const resetPassword = (email) => (dispatch) => {
     return sendPasswordResetEmail(auth, email)
       .then(() => {
         dispatch({ type: "CHANGE_ISLOADING", value: false });
-        console.log("berhasil");
         resolve(true);
       })
       .catch((erorr) => {
-        console.log(erorr);
+        const errorCode = erorr.code;
         dispatch({ type: "CHANGE_ISLOADING", value: false });
-        reject(false);
+        reject(errorCode);
       });
   });
 };

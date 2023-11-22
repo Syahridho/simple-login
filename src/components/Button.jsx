@@ -3,7 +3,7 @@ import { FaCircleNotch } from "react-icons/fa";
 const Button = ({ title, onClick, loading }) => {
   if (loading === true) {
     return (
-      <button className="bg-slate-800 text-white py-1.5 flex items-center justify-center gap-4 hover:bg-slate-950">
+      <button className="bg-slate-800 text-white py-1.5 flex items-center justify-center w-full gap-4 hover:bg-slate-950">
         Loading...
         <FaCircleNotch className="animate-spin text-white" />
       </button>
@@ -11,7 +11,7 @@ const Button = ({ title, onClick, loading }) => {
   }
   return (
     <button
-      className="bg-slate-800 text-white py-1.5 hover:bg-slate-950"
+      className="bg-slate-800 text-white py-1.5 w-full hover:bg-slate-950"
       onClick={onClick}
     >
       {title}
