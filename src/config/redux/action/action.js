@@ -9,18 +9,18 @@ import { auth } from "./../../firebase/firebase";
 export const registerUserAPI = (data) => (dispatch) => {
   return new Promise((resolve, reject) => {
     dispatch({ type: "CHANGE_ISLOADING", value: true });
-    console.log(data);
+
     return createUserWithEmailAndPassword(auth, data.email, data.password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log(user);
+
         dispatch({ type: "CHANGE_ISALLREADYEMAIL", value: false });
         dispatch({ type: "CHANGE_ISLOADING", value: false });
         resolve(true);
       })
       .catch((error) => {
         const errorCode = error.code;
-        console.log(errorCode);
+
         dispatch({ type: "CHANGE_ISLOADING", value: false });
         dispatch({ type: "CHANGE_ISALLREADYEMAIL", value: true });
         reject(errorCode);
@@ -34,7 +34,7 @@ export const loginUserAPI = (data) => (dispatch) => {
     return signInWithEmailAndPassword(auth, data.email, data.password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log(user);
+
         const dataUser = {
           email: user.email,
           uid: user.uid,
@@ -50,7 +50,7 @@ export const loginUserAPI = (data) => (dispatch) => {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
+
         dispatch({ type: "CHANGE_ISLOADING", value: false });
         dispatch({ type: "CHANGE_ISLOGIN", value: false });
         reject(errorCode);
@@ -70,7 +70,6 @@ export const logoutUserAPI = () => (dispatch) => {
         resolve(true);
       })
       .catch((error) => {
-        console.log(error);
         dispatch({ type: "CHANGE_ISLOADING", value: false });
         reject(false);
       });

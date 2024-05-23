@@ -22,7 +22,6 @@ const Register = ({ isLoading, registerAPI }) => {
       ...prevDatas,
       [type]: e.target.value,
     }));
-    console.log(form);
   };
 
   const onSubmitHandle = async () => {
@@ -30,7 +29,6 @@ const Register = ({ isLoading, registerAPI }) => {
       email: form.email,
       password: form.password,
     }).catch((err) => err);
-    console.log("res", res);
     if (res === true) {
       setForm({
         email: "",

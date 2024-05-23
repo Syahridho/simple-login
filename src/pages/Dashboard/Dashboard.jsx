@@ -9,14 +9,14 @@ const Dashboard = ({ logout, isLogin, user, checkLogin }) => {
 
   useEffect(() => {
     const userLocal = JSON.parse(localStorage.getItem("userData"));
-    console.log(userLocal);
+
     checkLogin(userLocal);
   }, []);
 
   const handleLogout = async () => {
     try {
       await logout();
-      console.log(isLogin);
+
       setisLogout(true);
     } catch (error) {
       console.error("Error during logout:", error);
